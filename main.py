@@ -12,6 +12,7 @@ pygame.display.set_icon(icon)
 pygame.display.set_caption('Space Marker')
 pygame.mixer.music.load('soundtrack.mp3')
 pygame.mixer.music.play(-1)
+estrela=pygame.image.load('star.png')
 fonte=pygame.font.Font(None,20)
 running=True
 estrelas=[]
@@ -26,15 +27,17 @@ while running:
             estrelas.append(posicao)
             nome=simpledialog.askstring('Space','Nomeie o ponto selecionado:')
             nomeestrelas.append(nome)
+            if nome == '':
+                nome='desconhecido'+str(posicao)
+            coordenadas.append((nome,posicao))
             print(nomeestrelas)
             print(posicao)
-            if nome==None:
-                item='desconhecido'+str(posicao)
-            coordenadas.append((nome,posicao))
     tela.blit(fundo,(0,0))
     for nome, posicao in coordenadas:
+        posicaoestrela=(posicao[0]-estrela.get_width()//2,posicao[1]-estrela.get_height()//2)
+        tela.blit(estrela,posicaoestrela)
         textoestrela=fonte.render(nome,True,branco)
-        tela.blit(textoestrela,posicao)
+        tela.blit(textoestrela,(posicao[0],posicao[1]+estrela.get_height()//2+5))
     pygame.display.update()
     clock.tick(60)
 pygame.quit()

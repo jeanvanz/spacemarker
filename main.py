@@ -1,5 +1,6 @@
 import pygame
 from tkinter import simpledialog
+import math 
 pygame.init()
 tamanho=(1280,720)
 branco=(255,255,255)
@@ -19,20 +20,26 @@ pressF11=fonte.render('Pressione F11 para Carregar os Pontos',True,branco)
 pressF12=fonte.render('Pressione F12 para Deletar os Pontos',True,branco)
 running=True
 estrelas={}
+def calcular_distancia(ponto1, ponto2): 
+    return math.sqrt((ponto2[0] - ponto1[0])**2+(ponto2[1] - ponto1[1])**2)    
 while running:
     for evento in pygame.event.get():
-        if evento.type==pygame.QUIT or evento.type==pygame.KEYDOWN and evento.key==pygame.K_ESCAPE:
-            quit()
+        if evento.type==pygame.QUIT:
+            running=False
+        elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_ESCAPE:
+            pygame.quit()
         elif evento.type==pygame.MOUSEBUTTONUP:
             posicao=pygame.mouse.get_pos()
             nome=simpledialog.askstring('Space','Nomeie o ponto selecionado:')
-            print(estrelas)
             if nome == None or nome == '':
                 nome='desconhecido'+str(posicao)
             estrelas[nome] = posicao
             print(estrelas)
         elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F12:
             estrelas={}
+        
+
+
     tela.blit(fundo,(0,0))
     tela.blit(pressF10,(10,20))
     tela.blit(pressF11,(10,40))
@@ -45,6 +52,14 @@ while running:
         if len(estrelas)>=2:
             pontos = list(estrelas.values())
             pygame.draw.lines(tela, branco, False, pontos, 1)
+            for i in range(len(pontos) - 1):
+                ponto_atual = pontos[i]
+                proximo_ponto = pontos[i + 1]
+                distancia = calcular_distancia(ponto_atual, proximo_ponto)
+                texto_distancia = fonte.render(f"{distancia:.2f}", True, branco)
+                posicao_texto_distancia = ((ponto_atual[0] + proximo_ponto[0]) // 2, (ponto_atual[1] + proximo_ponto[1]) // 2)
+                tela.blit(texto_distancia, posicao_texto_distancia)
+
     pygame.display.update()
     clock.tick(60)
 pygame.quit()

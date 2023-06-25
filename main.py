@@ -42,6 +42,9 @@ while running:
         tela.blit(estrela,posicaoestrela)
         textoestrela=fonte.render(nome,True,branco)
         tela.blit(textoestrela,(posicao[0],posicao[1]+estrela.get_height()//2+5))
+        if len(estrelas)>=2:
+            pontos = list(estrelas.values())
+            pygame.draw.lines(tela, branco, False, pontos, 1)
     pygame.display.update()
     clock.tick(60)
 pygame.quit()

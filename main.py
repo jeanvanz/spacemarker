@@ -2,6 +2,7 @@ import pygame
 from tkinter import simpledialog
 import math
 import json
+import sys
 pygame.init()
 tamanho=(1280,720)
 branco=(255,255,255)
@@ -23,12 +24,16 @@ running=True
 mensagemexibida=False
 mensagemtempoinicial=0
 mensagemduracao=3000
+def salvarpontos():
+    with open('db.txt', 'w') as database:
+        json.dump(estrelas, database)
 def calculardistancia(ponto1, ponto2): 
     return math.sqrt((ponto2[0] - ponto1[0])**2+(ponto2[1] - ponto1[1])**2)
 estrelas={}
 while running:
     for evento in pygame.event.get():
         if evento.type==pygame.QUIT or evento.type==pygame.KEYDOWN and evento.key==pygame.K_ESCAPE:
+            salvarpontos()
             running=False
         elif evento.type==pygame.MOUSEBUTTONUP:
             posicao=pygame.mouse.get_pos()

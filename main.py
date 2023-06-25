@@ -1,6 +1,8 @@
 import pygame
 from tkinter import simpledialog
 import math 
+import pickle
+import json
 pygame.init()
 tamanho=(1280,720)
 branco=(255,255,255)
@@ -37,6 +39,20 @@ while running:
             print(estrelas)
         elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F12:
             estrelas={}
+        elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F10:
+            try:
+                with open('db.txt','w') as database:
+                    json.dump(estrelas,database)
+            except:
+                print("Erro ao criar base de dados")
+
+        elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F11:
+            try:
+                with open('db.txt') as database:
+                    estrelas = json.load(database)
+            except:
+                print("Erro ao salvar os pontos")
+
     tela.blit(fundo,(0,0))
     tela.blit(pressF10,(10,20))
     tela.blit(pressF11,(10,40))
@@ -53,8 +69,8 @@ while running:
                 pontoatual = pontos[i]
                 proximoponto = pontos[i + 1]
                 distancia = calculardistancia(pontoatual, proximoponto)
-                distanciax=(proximoponto[0]-pontoatual[0])
-                distanciay = (proximoponto[1] - pontoatual[1])
+                distanciax=abs(proximoponto[0]-pontoatual[0])
+                distanciay=abs(proximoponto[1] - pontoatual[1])
                 textodistanciay = fonte.render(f"y: {distanciay:.2f}", True, branco)
                 textodistancia = fonte.render(f"x: {distanciax:.2f}", True, branco)
                 posicaotextodistancia = ((pontoatual[0] + proximoponto[0]) // 2 - 40, (pontoatual[1] + proximoponto[1]) // 2 - 20)

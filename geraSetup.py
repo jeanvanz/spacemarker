@@ -9,7 +9,8 @@ cx_Freeze.setup(
             'packages':['pygame'],
             'include_files':[
                 'bg.jpg',
-                'space.png'
+                'space.png',
+                'star.png',
                 'soundtrack.mp3'
             ]
         }

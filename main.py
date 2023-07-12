@@ -2,7 +2,6 @@ import pygame
 from tkinter import simpledialog
 import math
 import json
-import sys
 pygame.init()
 tamanho=(1280,720)
 branco=(255,255,255)

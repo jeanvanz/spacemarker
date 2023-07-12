@@ -42,11 +42,7 @@ while running:
                 nome='desconhecido'+str(posicao)
             elif nome in estrelas:
                 mensagem=fonte.render(f'Já existe um ponto cadastrado com esse nome: {nome}', True, branco)
-                mensagemlargura=mensagem.get_width()
-                mensagemaltura=mensagem.get_height()
-                mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                 mensagemexibida=True
-                mensagemtempoinicial=pygame.time.get_ticks()
                 continue
             estrelas[nome]=posicao
         elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F12:
@@ -57,46 +53,26 @@ while running:
                     estrelas=json.load(database)
                 if not estrelas:
                     mensagem=fonte.render(f'Não há pontos salvos para carregar', True, branco)
-                    mensagemlargura=mensagem.get_width()
-                    mensagemaltura=mensagem.get_height()
-                    mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                     mensagemexibida=True
-                    mensagemtempoinicial=pygame.time.get_ticks()
                     continue
             except FileNotFoundError:
                 mensagem=fonte.render(f'Não há pontos salvos para carregar', True, branco)
-                mensagemlargura=mensagem.get_width()
-                mensagemaltura=mensagem.get_height()
-                mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                 mensagemexibida=True
-                mensagemtempoinicial=pygame.time.get_ticks()
                 continue
             except json.decoder.JSONDecodeError:
                 mensagem=fonte.render(f'Erro ao carregar os pontos', True, branco)
-                mensagemlargura=mensagem.get_width()
-                mensagemaltura=mensagem.get_height()
-                mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                 mensagemexibida=True
-                mensagemtempoinicial=pygame.time.get_ticks()
                 continue
         elif evento.type==pygame.KEYDOWN and evento.key==pygame.K_F10:
             try:
                 with open('db.txt','w') as database:
                     json.dump(estrelas,database)
                     mensagem=fonte.render(f'Pontos salvos', True, branco)
-                    mensagemlargura=mensagem.get_width()
-                    mensagemaltura=mensagem.get_height()
-                    mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                     mensagemexibida=True
-                    mensagemtempoinicial=pygame.time.get_ticks()
                     continue
             except:
                 mensagem=fonte.render(f'Erro ao criar base de dados', True, branco)
-                mensagemlargura=mensagem.get_width()
-                mensagemaltura=mensagem.get_height()
-                mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
                 mensagemexibida=True
-                mensagemtempoinicial=pygame.time.get_ticks()
                 continue
     tela.blit(fundo,(0,0))
     tela.blit(pressF10,(10,20))
@@ -122,6 +98,10 @@ while running:
                 tela.blit(textodistancia,(posicaotextodistancia[0],posicaotextodistancia[1]-40))
                 tela.blit(textodistanciay,(posicaotextodistancia[0],posicaotextodistancia[1]-20))
     if mensagemexibida:
+        mensagemlargura=mensagem.get_width()
+        mensagemaltura=mensagem.get_height()
+        mensagemposicao=(tamanho[0] // 2 - mensagemlargura // 2, tamanho[1] // 2 - mensagemaltura // 2)
+        mensagemtempoinicial=pygame.time.get_ticks()
         tela.blit(mensagem, mensagemposicao)
         if pygame.time.get_ticks()-mensagemtempoinicial>mensagemduracao:
             mensagemexibida=False
